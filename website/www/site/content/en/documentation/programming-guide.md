@@ -32,7 +32,7 @@ If you want a brief introduction to Beam's basic concepts before reading the
 programming guide, take a look at the
 [Basics of the Beam model](/documentation/basics/) page.
 
-{{< language-switcher java py go typescript >}}
+{{< language-switcher java py go typescript rust >}}
 
 {{< paragraph class="language-py" >}}
 The Python SDK supports Python 3.7, 3.8, 3.9, and 3.10.
@@ -44,6 +44,10 @@ The Go SDK supports Go v1.19+. SDK release 2.32.0 is the last experimental versi
 
 {{< paragraph class="language-typescript">}}
 The Typescript SDK supports Node v16+ and is still experimental.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+The Rust SDK supports Rust (TODO version) and is still experimental.
 {{< /paragraph >}}
 
 ## 1. Overview {#overview}
