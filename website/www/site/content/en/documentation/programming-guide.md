@@ -4532,7 +4532,7 @@ automatically convert to any matching schema type, just like when reading the en
 
 ## 7. Data encoding and type safety {#data-encoding-and-type-safety}
 
-{{< language-switcher java py go typescript >}}
+{{< language-switcher java py go typescript rust >}}
 
 When Beam runners execute your pipeline, they often need to materialize the
 intermediate data in your `PCollection`s, which requires converting elements to
@@ -4579,6 +4579,14 @@ Users can build custom coders by extending `beam.coders.Coder`
 for use with `withCoderInternal`, but generally logical types are preferred for this case.
 {{< /paragraph >}}
 
+{{< paragraph class="language-rust">}}
+In the Beam SDK for Rust, the type `Coder` provides the methods required for
+encoding and decoding data. The SDK for Rust provides a number of Coder
+subclasses that work with a variety of standard Rust types, such as `i32`,
+`u64`, `f64`, `String`, `Vec<u8>` and more. You can find all of the available Coder
+subclasses in the coders module (TODO link).
+{{< /paragraph >}}
+
 > Note that coders do not necessarily have a 1:1 relationship with types. For
 > example, the Integer type can have multiple valid coders, and input and output
 > data can use different Integer coders. A transform might have Integer-typed
@@ -4605,6 +4613,12 @@ You can get the coder for an existing `PCollection` by using the method
 not been set and cannot be inferred for the given `PCollection`.
 {{< /paragraph >}}
 
+{{< paragraph class="language-rust">}}
+You can explicitly set the coder for an existing `PCollection` by using the
+method `PCollection::with_coder::<SomeCoder>()`. It returns another `PCollection` 
+with the specified coder.
+{{< /paragraph >}}
+
 Beam SDKs use a variety of mechanisms when attempting to automatically infer the
 `Coder` for a `PCollection`.
 
@@ -4623,6 +4637,13 @@ type.
 {{< paragraph class="language-go">}}
 The Beam SDK for Go allows users to register default coder
 implementations with `beam.RegisterCoder`.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+The Beam SDK for Rust does not have `CoderRegistry` because it is a mechanism for
+dynamically inferring coders. Instead, the Beam SDK for Rust has static standard
+coders for each `PCollection` and the standard coders can be overridden by
+calling the `PCollection::with_coder::<SomeCoder>()` method.
 {{< /paragraph >}}
 
 {{< paragraph class="language-java">}}
@@ -4672,16 +4693,24 @@ is by invoking `withCoder` when you apply the `Create` transform.
 
 ### 7.2. Default coders and the CoderRegistry {#default-coders-and-the-coderregistry}
 
+{{< paragraph class="language-java language-py">}}
 Each Pipeline object has a `CoderRegistry` object, which maps language types to
 the default coder the pipeline should use for those types. You can use the
 `CoderRegistry` yourself to look up the default coder for a given type, or to
 register a new default coder for a given type.
+{{< /paragraph >}}
 
+{{< paragraph class="language-java language-py">}}
 `CoderRegistry` contains a default mapping of coders to standard
 <span class="language-java">Java</span><span class="language-py">Python</span>
 types for any pipeline you create using the Beam SDK for
 <span class="language-java">Java</span><span class="language-py">Python</span>.
 The following table shows the standard mapping:
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+`PCollection::apply()` creates a new `PCollection` with the coders below (called the standard mapping):
+{{< /paragraph >}}
 
 {{< paragraph class="language-java">}}
 <div class="table-container-wrapper">
@@ -4783,6 +4812,57 @@ The following table shows the standard mapping:
 </table>
 {{< /paragraph >}}
 
+{{< paragraph class="language-rust">}}
+<div class="table-container-wrapper">
+<table class="table-wrapper--pr">
+  <thead>
+    <tr class="header">
+      <th>Rust Type</th>
+      <th>Default Coder</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="odd">
+      <td>isize, i8, i16, i32, i64, usize, u8, u16, u32, u64</td>
+      <td>VarIntCoder</td>
+    </tr>
+    <tr class="even">
+      <td>I: IntoIterator</td>
+      <td>IterableCoder</td>
+    </tr>
+    <tr class="odd">
+      <td>KV</td>
+      <td>KvCoder</td>
+    </tr>
+    <tr class="even">
+      <td>Vec</td>
+      <td>ListCoder</td>
+    </tr>
+    <tr class="odd">
+      <td>HashMap</td>
+      <td>MapCoder</td>
+    </tr>
+    <tr class="even">
+      <td>String</td>
+      <td>StringUtf8Coder</td>
+    </tr>
+    <tr class="odd">
+      <td>TableRow</td>
+      <td>TableRowJsonCoder</td>
+    </tr>
+    <tr class="even">
+      <td>()</td>
+      <td>VoidCoder</td>
+    </tr>
+    <tr class="odd">
+      <td>Vec<u8></td>
+      <td>ByteArrayCoder</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+{{< /paragraph >}}
+
 #### 7.2.1. Looking up a default coder {#default-coder-lookup}
 
 {{< paragraph class="language-java">}}
@@ -4802,6 +4882,10 @@ This allows you to determine (or set) the default Coder for a Python type.
 
 {{< paragraph class="language-go">}}
 You can use the `beam.NewCoder` function to determine the default Coder for a Go type.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+Beam SDK for Rust does not support default coders.
 {{< /paragraph >}}
 
 #### 7.2.2. Setting the default coder for a type {#setting-default-coder}
@@ -4863,6 +4947,10 @@ func init() {
 }
 {{< /highlight >}}
 
+{{< paragraph class="language-rust">}}
+Beam SDK for Rust does not support default coders.
+{{< /paragraph >}}
+
 #### 7.2.3. Annotating a custom data type with a default coder {#annotating-custom-type-default-coder}
 
 <span class="language-java">
@@ -4915,6 +5003,28 @@ The Beam SDK for <span class="language-py">Python</span><span class="language-go
 does not support annotating data types with a default coder.
 If you would like to set a default coder, use the method described in the
 previous section, *Setting the default coder for a type*.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust" >}}
+The Beam SDK for Rust does not support annotating data types with a default coder.
+Instead, you can define a custom type which implements `ElemType` trait.
+The `ElemType` trait requires you to define a standard coder.
+
+```rust
+struct YourType {}
+
+impl ElemType for YourType {
+    type StandardCoder = YourTypeStandardCoder;
+    // ...
+}
+
+struct YourTypeStandardCoder {}
+
+impl CoderI for YourTypeStandardCoder {
+    type E = YourType;
+    // ...
+}
+```
 {{< /paragraph >}}
 
 ## 8. Windowing {#windowing}
