@@ -664,7 +664,11 @@ the transform itself as an argument, and the operation returns the output
 [Output PCollection] = await [Input PCollection].applyAsync([AsyncTransform])
 {{< /highlight >}}
 
-{{< paragraph class="language-java language-py language-typescript" >}}
+{{< highlight rust >}}
+[Output PCollection] = [Input PCollection].apply([Transform])
+{{< /highlight >}}
+
+{{< paragraph class="language-java language-py language-typescript  language-rust" >}}
 Because Beam uses a generic `apply` method for `PCollection`, you can both chain
 transforms sequentially and also apply transforms that contain other transforms
 nested within (called [composite transforms](#composite-transforms) in the Beam
@@ -713,6 +717,12 @@ For example, you can successively call transforms on PCollections to modify the 
 .apply([Third Transform])
 {{< /highlight >}}
 
+{{< highlight rust >}}
+[Final Output PCollection] = [Initial Input PCollection].apply([First Transform])
+.apply([Second Transform])
+.apply([Third Transform])
+{{< /highlight >}}
+
 The graph of this pipeline looks like the following:
 
 ![This linear pipeline starts with one input collection, sequentially applies
@@ -744,6 +754,12 @@ a branching pipeline, like so:
 {{< /highlight >}}
 
 {{< highlight typescript >}}
+[PCollection of database table rows] = [Database Table Reader].apply([Read Transform])
+[PCollection of 'A' names] = [PCollection of database table rows].apply([Transform A])
+[PCollection of 'B' names] = [PCollection of database table rows].apply([Transform B])
+{{< /highlight >}}
+
+{{< highlight rust >}}
 [PCollection of database table rows] = [Database Table Reader].apply([Read Transform])
 [PCollection of 'A' names] = [PCollection of database table rows].apply([Transform A])
 [PCollection of 'B' names] = [PCollection of database table rows].apply([Transform B])
