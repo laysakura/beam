@@ -886,7 +886,7 @@ func init() {
 
 ##### 4.2.1.1. Applying ParDo {#applying-pardo}
 
-{{< paragraph class="language-java language-py" >}}
+{{< paragraph class="language-java language-py language-rust" >}}
 Like all Beam transforms, you apply `ParDo` by calling the `apply` method on the
 input `PCollection` and passing `ParDo` as an argument, as shown in the
 following example code:
@@ -936,12 +936,28 @@ const words : PCollection<string> = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" model_pardo_apply >}}
 {{< /highlight >}}
 
-In the example, our input `PCollection` contains <span class="language-java language-py">`String`</span>
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_fn >}}
+{{< /highlight >}}
+
+{{< paragraph class="language-rust">}}
+`ParDo` can not only be created from a function but also from a closure.
+{{< /paragraph >}}
+
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure >}}
+{{< /highlight >}}
+
+In the example, our input `PCollection` contains <span class="language-java language-py language-rust">`String`</span>
 <span class="language-go">`string`</span> values. We apply a
 `ParDo` transform that specifies a function (`ComputeWordLengthFn`) to compute
 the length of each string, and outputs the result to a new `PCollection` of
 <span class="language-java language-py">`Integer`</span>
-<span class="language-go">`int`</span> values that stores the length of each word.
+<span class="language-go">`int`</span><span class="language-rust">`usize`</span> values that stores the length of each word.
 
 ##### 4.2.1.2. Creating a DoFn
 
