@@ -471,11 +471,17 @@ To create a `PCollection` from an in-memory `array`, you use the Beam-provided
 `Create` transform. Apply this transform directly to your `Root` object.
 {{< /paragraph >}}
 
+{{< paragraph class="language-typescript">}}
+To create a `PCollection` from an in-memory `Vec`, you use the Beam-provided
+`Create` transform. Apply this transform directly to your `Root` object.
+{{< /paragraph >}}
+
 The following example code shows how to create a `PCollection` from an in-memory
 <span class="language-java">`List`</span>
 <span class="language-py">`list`</span>
 <span class="language-go">`slice`</span>
 <span class="language-typescript">`array`</span>:
+<span class="language-rust">`Vec`</span>:
 
 {{< highlight java >}}
 public static void main(String[] args) {
@@ -506,6 +512,10 @@ public static void main(String[] args) {
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" create_pcollection >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" create_pcollection >}}
 {{< /highlight >}}
 
 ### 3.2. PCollection characteristics {#pcollection-characteristics}
