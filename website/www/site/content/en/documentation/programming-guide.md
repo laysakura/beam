@@ -129,6 +129,7 @@ processing task. Your Beam driver program typically starts by constructing a
 <span class="language-java">[Pipeline](https://beam.apache.org/releases/javadoc/{{< param release_latest >}}/index.html?org/apache/beam/sdk/Pipeline.html)</span>
 <span class="language-py">[Pipeline](https://github.com/apache/beam/blob/master/sdks/python/apache_beam/pipeline.py)</span>
 <span class="language-go">[Pipeline](https://github.com/apache/beam/blob/master/sdks/go/pkg/beam/pipeline.go#L62)</span>
+<span class="language-rust">Pipeline (TODO link)</span>
 object, and then using that object as the basis for creating the pipeline's data
 sets as `PCollection`s and its operations as `Transform`s.
 
@@ -164,6 +165,10 @@ Pipeline p = Pipeline.create(options);
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" pipelines_constructing_creating >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" pipelines_constructing_creating >}}
+{{< /highlight >}}
+
 ### 2.1. Configuring pipeline options {#configuring-pipeline-options}
 
 Use the pipeline options to configure different aspects of your pipeline, such
@@ -176,6 +181,12 @@ storing files.
 When you run the pipeline on a runner of your choice, a copy of the
 PipelineOptions will be available to your code. For example, if you add a PipelineOptions parameter
 to a DoFn's `@ProcessElement` method, it will be populated by the system.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+When you run the pipeline on a runner of your choice, a copy of the
+PipelineOptions will be available to your code. For example, if you add a PipelineOptions parameter
+to a DoFn's `process` method, it will be populated by the system.
 {{< /paragraph >}}
 
 #### 2.1.1. Setting PipelineOptions from command-line arguments {#pipeline-options-cli}
@@ -202,6 +213,10 @@ One can either construct one manually, but it is also common to pass an object
 created from command line options such as `yargs.argv`.
 {{< /paragraph >}}
 
+{{< paragraph class="language-rust">}}
+TODO
+{{< /paragraph >}}
+
 {{< highlight java >}}
 PipelineOptions options =
     PipelineOptionsFactory.fromArgs(args).withValidation().create();
@@ -217,6 +232,10 @@ PipelineOptions options =
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" pipeline_options >}}
+{{< /highlight >}}
+
+{{< highlight typescript >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" pipeline_options >}}
 {{< /highlight >}}
 
 This interprets command-line arguments that follow the format:
@@ -275,6 +294,10 @@ public interface MyOptions extends PipelineOptions {
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" pipeline_options_define_custom >}}
+{{< /highlight >}}
+
+{{< highlight typescript >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" pipeline_options_define_custom >}}
 {{< /highlight >}}
 
 You can also specify a description, which appears when a user passes `--help` as
@@ -340,6 +363,7 @@ Now your pipeline can accept `--input=value` and `--output=value` as command-lin
 The <span class="language-java">[PCollection](https://beam.apache.org/releases/javadoc/{{< param release_latest >}}/index.html?org/apache/beam/sdk/values/PCollection.html)</span>
 <span class="language-py">`PCollection`</span>
 <span class="language-go">[PCollection](https://github.com/apache/beam/blob/master/sdks/go/pkg/beam/pcollection.go#L39)</span>
+<span class="language-rust">PCollection (TODO link)</span>
 abstraction represents a
 potentially distributed, multi-element data set. You can think of a
 `PCollection` as "pipeline" data; Beam transforms use `PCollection` objects as
@@ -373,6 +397,7 @@ transform to the `Pipeline` object itself.
 <span class="language-py">`io.TextFileSource`</span>
 <span class="language-go">`textio.Read`</span>
 <span class="language-typescript">`textio.ReadFromText`</span>,
+<span class="language-rust">`io::TextIORead`</span>
 for example, reads from an
 external text file and returns a `PCollection` whose elements are of type
 `String`, each `String` represents one line from the text file. Here's how you
@@ -380,6 +405,7 @@ would apply <span class="language-java">`TextIO.Read`</span>
 <span class="language-py">`io.TextFileSource`</span>
 <span class="language-go">`textio.Read`</span>
 <span class="language-typescript">`textio.ReadFromText`</span>
+<span class="language-rust">`io::TextIORead`</span>
 to your `Pipeline` <span class="language-typescript">root</span> to create
 a `PCollection`:
 
@@ -406,6 +432,10 @@ public static void main(String[] args) {
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" pipelines_constructing_reading >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" pipelines_constructing_reading >}}
 {{< /highlight >}}
 
 See the [section on I/O](#pipeline-io) to learn more about how to read from the
