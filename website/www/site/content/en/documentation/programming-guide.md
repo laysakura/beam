@@ -937,19 +937,8 @@ const words : PCollection<string> = ...
 {{< /highlight >}}
 
 {{< highlight rust >}}
-// The input PCollection of Strings.
 let words = ...
-{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_fn >}}
-{{< /highlight >}}
-
-{{< paragraph class="language-rust">}}
-`ParDo` can not only be created from a function but also from a closure.
-{{< /paragraph >}}
-
-{{< highlight rust >}}
-// The input PCollection of Strings.
-let words = ...
-{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_dofn >}}
 {{< /highlight >}}
 
 In the example, our input `PCollection` contains <span class="language-java language-py language-rust">`String`</span>
@@ -985,6 +974,15 @@ create a `DoFn` struct, you'll need to provide type parameters that match
 the types of the input and output elements in a ProcessElement method.
 If your `DoFn` processes incoming `string` elements and produces `int` elements
 for the output collection (like our previous example, `ComputeWordLengthFn`), your dofn could
+look like this:
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+A `DoFn` processes one element at a time from the input `PCollection`. When you
+create an implementation of `DoFn` trait, you'll need to provide associate types
+for the input and output elements. If your `DoFn` processes incoming
+`String` elements and produces `Integer` elements for the output collection
+(like our previous example, `ComputeWordLengthFn`), your class declaration would
 look like this:
 {{< /paragraph >}}
 
@@ -1151,6 +1149,24 @@ following requirements:
 
 
 ##### 4.2.1.3. Lightweight DoFns and other abstractions {#lightweight-dofns}
+
+TODO write about the followings
+
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_fn >}}
+{{< /highlight >}}
+
+{{< paragraph class="language-rust">}}
+`ParDo` can not only be created from a function but also from a closure.
+{{< /paragraph >}}
+
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure >}}
+{{< /highlight >}}
 
 If your function is relatively straightforward, you can simplify your use of
 `ParDo` by providing a lightweight `DoFn` in-line, as

@@ -49,6 +49,35 @@ fn create_pcollection() {
     // [END create_pcollection]
 }
 
+fn model_pardo_dofn() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // let words = pipeline.apply(Create::from(vec![
+    //     "apple ".to_string(),
+    //     "banana".to_string(),
+    //     "cherry".to_string(),
+    // ]));
+
+    // [START model_pardo_dofn]
+    // // The DoFn to perform on each element in the input PCollection.
+    // struct ComputeWordLengthFn;
+    // impl DoFn for ComputeWordLengthFn {
+    //     type In = String;
+    //     type Out = usize;
+
+    //     fn process_element(&self, word: Self::In) -> Vec<Self::Out> {
+    //         vec![word.len()];
+    //     }
+    // }
+
+    // // Apply a ParDo to the PCollection "words" to compute lengths for each word.
+    // let word_lengths = words.apply(ParDo::new::<ComputeWordLengthFn>());
+    // [END model_pardo_dofn]
+}
+
 fn model_pardo_fn() {
     // // Create the pipeline.
     // let options =
@@ -62,7 +91,7 @@ fn model_pardo_fn() {
     // ]));
 
     // [START model_pardo_fn]
-    // The DoFn to perform on each element in the input PCollection.
+    // Function to perform on each element in the input PCollection.
     fn compute_word_length_fn(word: &str) -> usize {
         word.len()
     }
