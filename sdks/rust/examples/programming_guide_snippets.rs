@@ -68,8 +68,8 @@ fn model_pardo_dofn() {
     //     type In = String;
     //     type Out = usize;
 
-    //     fn process_element(&self, word: Self::In) -> Vec<Self::Out> {
-    //         vec![word.len()];
+    //     fn process(&self, word: &Self::In, out: mut OutputReceiver<Self::Out>) {
+    //         out.output(word.len());
     //     }
     // }
 

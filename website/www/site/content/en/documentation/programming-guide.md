@@ -981,8 +981,8 @@ look like this:
 A `DoFn` processes one element at a time from the input `PCollection`. When you
 create an implementation of `DoFn` trait, you'll need to provide associate types
 for the input and output elements. If your `DoFn` processes incoming
-`String` elements and produces `Integer` elements for the output collection
-(like our previous example, `ComputeWordLengthFn`), your class declaration would
+`String` elements and produces `usize` elements for the output collection
+(like our previous example, `ComputeWordLengthFn`), your implementation would
 look like this:
 {{< /paragraph >}}
 
@@ -1008,6 +1008,14 @@ func init() {
 	register.Function2x0(&ComputeWordLengthFn{})
 	register.Emitter1[int]()
 }
+{{< /highlight >}}
+
+{{< highlight rust >}}
+struct ComputeWordLengthFn;
+impl DoFn for ComputeWordLengthFn {
+    type In = String;
+    type Out = usize;
+    ...
 {{< /highlight >}}
 
 {{< paragraph class="language-java">}}
@@ -1043,6 +1051,18 @@ should accept a parameter `element`, which is the input element. In order to out
 the method can also take a function parameter, which can be called to emit elements.
 The parameter types must match the input and output types of your `DoFn`
  or the framework will raise an error.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust">}}
+Inside your `DoFn` implementation, you'll write a method `process` where you
+provide the actual processing logic. You don't need to manually extract the elements
+from the input collection; the Beam SDKs handle that for you. Your `process` method
+should accept an argument `element`, which is the input element. In order to output
+elements, the method also takes a parameter of type `OutputReceiver` which
+provides a method for emitting elements. It helps to output multiple, or even
+numerous number of elements from an input element.
+The parameter types must match the input
+and output types of your `DoFn` to pass the compiler.
 {{< /paragraph >}}
 
 {{< highlight java >}}
@@ -1083,6 +1103,11 @@ func init() {
 }
 {{< /highlight >}}
 
+{{< highlight rust >}}
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_dofn >}}
+{{< /highlight >}}
+
 <span class="language-go">
 
 > **Note:** Whether using a structural `DoFn` type or a functional `DoFn`, they should be registered with
@@ -1104,6 +1129,14 @@ func init() {
 > process element method must have two parameters, for each of the key and value,
 > respectively. Similarly, key/value pairs are also output as separate
 > parameters to a single `emitter function`.
+
+</span>
+
+<span class="language-rust">
+
+> **Note:** If the elements in your input `PCollection` are key/value pairs, you
+> can access the reference to key or value by using `element.as_key()` or
+> `element.as_value()`, respectively.
 
 </span>
 
@@ -1147,6 +1180,14 @@ following requirements:
 
 </span>
 
+<span class="language-py language-typescript">
+
+* You should not (and cannot) in any way modify the `element` argument provided to the
+  `process` method, or any side inputs.
+* Once you output a value using `OutputReceiver.output()` you should not (and cannot)
+  modify that value in any way.
+
+</span>
 
 ##### 4.2.1.3. Lightweight DoFns and other abstractions {#lightweight-dofns}
 
