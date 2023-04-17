@@ -2043,6 +2043,15 @@ thought to ensure correctness when there are external side effects.
 
 </span>
 
+<span class="language-rust">
+
+> **Note:** These requirements apply to implementations of `DoFn`(a function object
+> used with the [ParDo](#pardo) transform), `CombineFn` (a function object used
+> with the [Combine](#combine) transform), and `WindowFn` (a function object
+> used with the [Window](#windowing) transform).
+
+</span>
+
 #### 4.3.1. Serializability {#user-code-serializability}
 
 Any function object you provide to a transform must be **fully serializable**.
@@ -2070,15 +2079,22 @@ to [register a function directly](https://github.com/apache/beam/blob/master/sdk
 Note that if, as is often the case in Javascript, `func` returns objects that
 contain closures, it is not sufficient to register `func` alone--its return
 value must be registered if used.</span>
+<span class="language-rust">The traits to be implemented in user code, such
+as `DoFn`, `CombineFn`, and `WindowFn`, have `serde::Serializable` and `serde::Deserialize<'static>` constraints.</span>
 
 Some other serializability factors you should keep in mind are:
 
-* <span class="language-java language-py">Transient</span><span class="language-go">Unexported</span>
-  fields in your function object are *not* transmitted to worker
-  instances, because they are not automatically serialized.
 * Avoid loading a field with a large amount of data before serialization.
 * Individual instances of your function object cannot share data.
 * Mutating a function object after it gets applied will have no effect.
+
+<span class="language-java language-py">Also, Transient
+fields in your function object are *not* transmitted to worker
+instances, because they are not automatically serialized.</span>
+
+<span class="language-go">Also, Unexported
+fields in your function object are *not* transmitted to worker
+instances, because they are not automatically serialized.</span>
 
 <span class="language-java">
 
