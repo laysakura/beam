@@ -1180,7 +1180,7 @@ following requirements:
 
 </span>
 
-<span class="language-py language-typescript">
+<span class="language-rust">
 
 * You should not (and cannot) in any way modify the `element` argument provided to the
   `process` method, or any side inputs.
@@ -1191,37 +1191,23 @@ following requirements:
 
 ##### 4.2.1.3. Lightweight DoFns and other abstractions {#lightweight-dofns}
 
-TODO write about the followings
-
-{{< highlight rust >}}
-// The input PCollection of Strings.
-let words = ...
-{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_fn >}}
-{{< /highlight >}}
-
-{{< paragraph class="language-rust">}}
-`ParDo` can not only be created from a function but also from a closure.
-{{< /paragraph >}}
-
-{{< highlight rust >}}
-// The input PCollection of Strings.
-let words = ...
-{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure >}}
-{{< /highlight >}}
-
 If your function is relatively straightforward, you can simplify your use of
 `ParDo` by providing a lightweight `DoFn` in-line, as
 <span class="language-java">an anonymous inner class instance</span>
 <span class="language-py">a lambda function</span>
 <span class="language-go">an anonymous function</span>
 <span class="language-typescript">a function passed to `PCollection.map` or `PCollection.flatMap`</span>.
+<span class="language-rust">a function or a closure passed to,
+`ParDo::from_flatmap` and
+`ParDo::from_flatmap_with_context`</span>.
 
 Here's the previous example, `ParDo` with `ComputeLengthWordsFn`, with the
 `DoFn` specified as
 <span class="language-java">an anonymous inner class instance</span>
 <span class="language-py">a lambda function</span>
 <span class="language-go">an anonymous function</span>
-<span class="language-typescript">a function</span>:
+<span class="language-typescript">a function</span>
+<span class="language-rust">a closure</span>:
 
 {{< highlight java >}}
 // The input PCollection.
@@ -1263,16 +1249,26 @@ words = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" model_pardo_using_flatmap >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure >}}
+{{< /highlight >}}
+
 If your `ParDo` performs a one-to-one mapping of input elements to output
 elements--that is, for each input element, it applies a function that produces
-*exactly one* output element, <span class="language-go">you can return that
-element directly.</span><span class="language-java language-py">you can use the higher-level
-<span class="language-java">`MapElements`</span><span class="language-py language-py">`Map`</span>
-transform.</span><span class="language-java">`MapElements` can accept an anonymous
+*exactly one* output element,
+<span class="language-go">you can return that element directly.</span>
+<span class="language-java language-py">you can use the higher-level
+<span class="language-java">`MapElements`</span>
+<span class="language-py language-py">`Map`</span>
+transform.</span>
+<span class="language-rust">you can use `ParDo::from_map` and `ParDo::from_map_with_context`.</span>
+<span class="language-java">`MapElements` can accept an anonymous
 Java 8 lambda function for additional brevity.</span>
 
 Here's the previous example using <span class="language-java">`MapElements`</span>
-<span class="language-py language-typescript">`Map`</span><span class="language-go">a direct return</span>:
+<span class="language-py language-typescript">`Map`</span><span class="language-go">a direct return</span><span class="language-rust">`from_map`</span>:
 
 {{< highlight java >}}
 // The input PCollection.
@@ -1305,6 +1301,12 @@ var words beam.PCollection = ...
 // The input PCollection of string.
 words = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" model_pardo_using_map >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+// The input PCollection of Strings.
+let words = ...
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_pardo_closure_map >}}
 {{< /highlight >}}
 
 <span class="language-java">

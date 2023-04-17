@@ -78,29 +78,6 @@ fn model_pardo_dofn() {
     // [END model_pardo_dofn]
 }
 
-fn model_pardo_fn() {
-    // // Create the pipeline.
-    // let options =
-    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
-    // let pipeline = Pipeline::new(options);
-
-    // let words = pipeline.apply(Create::from(vec![
-    //     "apple ".to_string(),
-    //     "banana".to_string(),
-    //     "cherry".to_string(),
-    // ]));
-
-    // [START model_pardo_fn]
-    // Function to perform on each element in the input PCollection.
-    fn compute_word_length_fn(word: &str) -> usize {
-        word.len()
-    }
-
-    // // Apply a ParDo to the PCollection "words" to compute lengths for each word.
-    // let word_lengths = words.apply(ParDo::from_map(compute_word_length_fn));
-    // [END model_pardo_fn]
-}
-
 fn model_pardo_closure() {
     // // Create the pipeline.
     // let options =
@@ -115,8 +92,26 @@ fn model_pardo_closure() {
 
     // [START model_pardo_closure]
     // // Apply a ParDo to the PCollection "words" to compute lengths for each word.
-    // let word_lengths = words.apply(ParDo::from_map(|word| word.len()));
+    // let word_lengths = words.apply(ParDo::from_flatmap(|word| vec![word.len()]));
     // [END model_pardo_closure]
+}
+
+fn model_pardo_closure_map() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // let words = pipeline.apply(Create::from(vec![
+    //     "apple ".to_string(),
+    //     "banana".to_string(),
+    //     "cherry".to_string(),
+    // ]));
+
+    // [START model_pardo_closure_map]
+    // // Apply a ParDo to the PCollection "words" to compute lengths for each word.
+    // let word_lengths = words.apply(ParDo::from_map(|word| word.len()));
+    // [END model_pardo_closure_map]
 }
 
 fn main() {}
