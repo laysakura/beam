@@ -1446,8 +1446,10 @@ unbounded data streams.
 
 If you do apply `GroupByKey` or `CoGroupByKey` to a group of unbounded
 `PCollection`s without setting either a non-global windowing strategy, a trigger
-strategy, or both for each collection, Beam generates an IllegalStateException
-error at pipeline construction time.
+strategy, or both for each collection, Beam generates an
+<span class="language-java language-py language-go language-typescript">IllegalStateException error</span>
+<span class="language-rust">IllegalStateError</span>
+ at pipeline construction time.
 
 When using `GroupByKey` or `CoGroupByKey` to group `PCollection`s that have a
 [windowing strategy](#windowing) applied, all of the `PCollection`s you want to
@@ -1457,7 +1459,9 @@ fixed windows, or 4-minute sliding windows starting every 30 seconds.
 
 If your pipeline attempts to use `GroupByKey` or `CoGroupByKey` to merge
 `PCollection`s with incompatible windows, Beam generates an
-IllegalStateException error at pipeline construction time.
+<span class="language-java language-py language-go language-typescript">IllegalStateException error</span>
+<span class="language-rust">IllegalStateError</span>
+ at pipeline construction time.
 
 #### 4.2.3. CoGroupByKey {#cogroupbykey}
 
