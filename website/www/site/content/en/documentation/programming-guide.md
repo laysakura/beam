@@ -1432,6 +1432,9 @@ const scores : PCollection<{word: string, score: number}> = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" groupby >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" groupby >}}
+{{< /highlight >}}
 
 ##### 4.2.2.1 GroupByKey and unbounded PCollections {#groupbykey-and-unbounded-pcollections}
 

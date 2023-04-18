@@ -114,4 +114,16 @@ fn model_pardo_closure_map() {
     // [END model_pardo_closure_map]
 }
 
+fn groupby() {
+    // [START groupby]
+    // // The input PCollection.
+    // let mapped: PCollection<KV<String, String>> = ...;
+
+    // // Apply GroupByKey to the PCollection mapped.
+    // // Save the result as the PCollection reduced.
+    // let reduced: PCollection<KV<String, Vec<String>>> =
+    //     mapped.apply(GroupByKey::<String, String>::new());
+    // [END groupby]
+}
+
 fn main() {}
