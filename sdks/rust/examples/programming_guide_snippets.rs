@@ -63,7 +63,7 @@ fn model_pardo_dofn() {
 
     // [START model_pardo_dofn]
     // // The DoFn to perform on each element in the input PCollection.
-    // struct ComputeWordLengthFn;
+    struct ComputeWordLengthFn;
     // impl DoFn for ComputeWordLengthFn {
     //     type In = String;
     //     type Out = usize;
@@ -212,6 +212,41 @@ fn combine_simple_sum() {
     //     .apply(GroupGlobally::new())
     //     .apply(Combine::from_fold(0, |acc, x| acc + x));
     // [END combine_simple_sum]
+}
+
+fn combine_custom_average() {
+    // [START combine_custom_average]
+    struct AverageAccum {
+        sum: i32,
+        count: i32,
+    }
+    // impl ElemType for AverageAccum {}
+
+    struct AverageFn;
+    // impl CombineFn<i32, AverageAccum, f32> for AverageFn {
+    //     fn create_accumulator(&self) -> AverageAccum {
+    //         AverageAccum { sum: 0, count: 0 }
+    //     }
+
+    //     fn add_input(&self, acc: AverageAccum, input: i32) -> AverageAccum {
+    //         AverageAccum {
+    //             sum: acc.sum + input,
+    //             count: acc.count + 1,
+    //         }
+    //     }
+
+    //     fn merge_accumulators(&self, acc1: AverageAccum, acc2: AverageAccum) -> AverageAccum {
+    //         AverageAccum {
+    //             sum: acc1.sum + acc2.sum,
+    //             count: acc1.count + acc2.count,
+    //         }
+    //     }
+
+    //     fn extract_output(&self, acc: AverageAccum) -> f32 {
+    //         acc.sum / acc.count
+    //     }
+    // }
+    // [END combine_custom_average]
 }
 
 fn main() {}

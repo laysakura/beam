@@ -1820,6 +1820,10 @@ pc = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" combine_custom_average >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" combine_custom_average >}}
+{{< /highlight >}}
+
 <span class="language-go">
 
 > **Note**: Only `MergeAccumulators` is a required method. The others will have a default interpretation
