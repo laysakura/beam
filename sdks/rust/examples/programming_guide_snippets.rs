@@ -126,4 +126,78 @@ fn groupby() {
     // [END groupby]
 }
 
+fn cogroupbykey() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // [START cogroupbykey_inputs]
+    // let emails_list = vec![
+    //     KV::new("amy".to_string(), "amy@example.com".to_string()),
+    //     KV::new("carl".to_string(), "carl@example.com".to_string()),
+    //     KV::new("julia".to_string(), "julia@example.com".to_string()),
+    //     KV::new("carl".to_string(), "carl@email.com".to_string()),
+    // ];
+    // let phones_list = vec![
+    //     KV::new("amy".to_string(), "111-222-3333".to_string()),
+    //     KV::new("james".to_string(), "222-333-4444".to_string()),
+    //     KV::new("jamy".to_string(), "333-444-5555".to_string()),
+    //     KV::new("carl".to_string(), "444-555-6666".to_string()),
+    // ];
+
+    // let emails = pipeline.apply(Create::from(emails_list));
+    // let phones = pipeline.apply(Create::from(phones_list));
+    // [END cogroupbykey_inputs]
+
+    // [START cogroupbykey_raw_outputs]
+    // let expected_results = vec![
+    //     KV::new(
+    //         "amy".to_string(),
+    //         CoGbk2Result::new(
+    //             vec!["amy@example.com".to_string()],
+    //             vec!["111-222-3333".to_string(), "333-444-5555".to_string()],
+    //         ),
+    //     ),
+    //     KV::new(
+    //         "carl".to_string(),
+    //         CoGbk2Result::new(
+    //             vec!["carl@example.com", "carl@email.com"],
+    //             vec!["444-555-6666"],
+    //         ),
+    //     ),
+    //     KV::new(
+    //         "james".to_string(),
+    //         CoGbk2Result::new(vec![], vec!["222-333-4444"]),
+    //     ),
+    //     KV::new(
+    //         "julia".to_string(),
+    //         CoGbk2Result::new(vec!["julia@example.com"], vec![]),
+    //     ),
+    // ];
+    // [END cogroupbykey_raw_outputs]
+
+    // [START cogroupbykey]
+    // let formatted_results_pcoll = (emails, phones)
+    //     .apply(CoGroupByKey2::<String, String>::new())
+    //     .apply(ParDo::from_map(|result| {
+    //         let key = result.as_key();
+    //         let emails = &result.as_value().0;
+    //         let phones = &result.as_value().1;
+    //         format!("{}; {:?}; {:?}", key, emails, phones)
+    //     }));
+    // [END cogroupbykey]
+
+    // [START cogroupbykey_formatted_outputs]
+    let expected_formatted_results = [
+        "amy; [amy@example.com]; [111-222-3333,333-444-5555]",
+        "carl; [carl@email.com,carl@example.com]; [444-555-6666]",
+        "james; []; [222-333-4444]",
+        "julia; [julia@example.com]; []",
+    ];
+    // [END cogroupbykey_formatted_outputs]
+
+    // TODO asset formatted_results_pcoll == expected_formatted_results
+}
+
 fn main() {}

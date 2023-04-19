@@ -1525,7 +1525,7 @@ and email addresses. The second set of data has a `TupleTag<String>` called
 `phonesTag` and contains names and phone numbers.
 {{< /paragraph >}}
 
-{{< paragraph class="language-py language-go" >}}
+{{< paragraph class="language-py language-go language-rust" >}}
 The first set of data contains names and email addresses. The second set of
 data contains names and phone numbers.
 {{< /paragraph >}}
@@ -1545,6 +1545,10 @@ data contains names and phone numbers.
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" cogroupbykey_inputs >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" cogroupbykey_inputs >}}
 {{< /highlight >}}
 
 After `CoGroupByKey`, the resulting data contains all data associated with each
@@ -1567,6 +1571,10 @@ unique key from any of the input collections.
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" cogroupbykey_raw_outputs >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" cogroupbykey_raw_outputs >}}
+{{< /highlight >}}
+
 {{< paragraph class="language-java language-py language-typescript" >}}
 The following code example joins the two `PCollection`s with `CoGroupByKey`,
 followed by a `ParDo` to consume the result. Then, the code uses tags to look up
@@ -1577,6 +1585,13 @@ and format data from each collection.
 The following code example joins the two `PCollection`s with `CoGroupByKey`,
 followed by a `ParDo` to consume the result. The ordering of the `DoFn` iterator
 parameters maps to the ordering of the `CoGroupByKey` inputs.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust" >}}
+The following code example joins the two `PCollection`s with `CoGroupByKey`,
+followed by a `ParDo` to consume the result. Then, the code uses `.0` and `.1`
+to look up
+and format data from each collection.
 {{< /paragraph >}}
 
 {{< highlight java >}}
@@ -1596,6 +1611,10 @@ parameters maps to the ordering of the `CoGroupByKey` inputs.
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" cogroupbykey >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" cogroupbykey >}}
+{{< /highlight >}}
+
 The formatted data looks like this:
 
 {{< highlight java >}}
@@ -1612,6 +1631,10 @@ The formatted data looks like this:
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" cogroupbykey_formatted_outputs >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" cogroupbykey_formatted_outputs >}}
 {{< /highlight >}}
 
 #### 4.2.4. Combine {#combine}
