@@ -2066,8 +2066,10 @@ collections you're merging must all use (hypothetically) identical 5-minute
 fixed windows or 4-minute sliding windows starting every 30 seconds.
 
 If your pipeline attempts to use `Flatten` to merge `PCollection` objects with
-incompatible windows, Beam generates an `IllegalStateException` error when your
-pipeline is constructed.
+incompatible windows, Beam generates an
+<span class="language-java language-py language-go language-typescript">`IllegalStateException`</span>
+<span class="language-rust">`IllegalStateError`</span>
+error when your pipeline is constructed.
 
 #### 4.2.6. Partition {#partition}
 
