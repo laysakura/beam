@@ -200,4 +200,18 @@ fn cogroupbykey() {
     // TODO asset formatted_results_pcoll == expected_formatted_results
 }
 
+fn combine_simple_sum() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // [START combine_simple_sum]
+    // let pcoll = pipeline.apply(Create::from(vec![1, 10, 100, 1000]));
+    // let result = pcoll
+    //     .apply(GroupGlobally::new())
+    //     .apply(Combine::from_fold(0, |acc, x| acc + x));
+    // [END combine_simple_sum]
+}
+
 fn main() {}

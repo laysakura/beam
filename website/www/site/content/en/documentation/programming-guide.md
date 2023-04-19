@@ -1643,6 +1643,7 @@ The formatted data looks like this:
 <span class="language-py">[`Combine`](https://github.com/apache/beam/blob/master/sdks/python/apache_beam/transforms/core.py)</span>
 <span class="language-go">[`Combine`](https://github.com/apache/beam/blob/master/sdks/go/pkg/beam/combine.go#L27)</span>
 <span class="language-typescript">[`Combine`](https://github.com/apache/beam/blob/master/sdks/typescript/src/apache_beam/transforms/group_and_combine.ts)</span>
+<span class="language-rust">`Combine` (TODO URL)</span>
 is a Beam transform for combining collections of elements or values in your
 data. `Combine` has variants that work on entire `PCollection`s, and some that
 combine the values for each key in `PCollection`s of key/value pairs.
@@ -1710,6 +1711,10 @@ public static class SumInts implements SerializableFunction<Iterable<Integer>, I
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" combine_simple_sum >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" combine_simple_sum >}}
 {{< /highlight >}}
 
 {{< paragraph class="language-go">}}
