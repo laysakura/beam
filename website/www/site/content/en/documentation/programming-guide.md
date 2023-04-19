@@ -1863,6 +1863,10 @@ pc = ...
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" combine_global_average >}}
 {{< /highlight >}}
 
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" combine_global_average >}}
+{{< /highlight >}}
+
 ##### 4.2.4.4. Combine and global windowing {#combine-global-windowing}
 
 If your input `PCollection` uses the default global windowing, the default

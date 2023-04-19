@@ -247,6 +247,13 @@ fn combine_custom_average() {
     //     }
     // }
     // [END combine_custom_average]
+
+    // [START combine_global_average]
+    // let pcoll = pipeline.apply(Create::new(vec![4, 5, 6]));
+    // let result = pcoll
+    //     .apply(GroupGlobally::new())
+    //     .apply(Combine::<AverageFn>::new());
+    // [END combine_global_average]
 }
 
 fn main() {}
