@@ -2008,6 +2008,7 @@ playerAccuracies := ... // PCollection<string,int>
 <span class="language-py">[`Flatten`](https://github.com/apache/beam/blob/master/sdks/python/apache_beam/transforms/core.py)</span>
 <span class="language-go">[`Flatten`](https://github.com/apache/beam/blob/master/sdks/go/pkg/beam/flatten.go)</span>
 <span class="language-typescript">`Flatten`</span>
+<span class="language-rust">`Flatten` (TODO URL)</span>
 is a Beam transform for `PCollection` objects that store the same data type.
 `Flatten` merges multiple `PCollection` objects into a single logical
 `PCollection`.
@@ -2043,6 +2044,10 @@ PCollection<String> merged = collections.apply(Flatten.<String>pCollections());
 // Flatten taken an array of PCollection objects, wrapped in beam.P(...)
 // Returns a single PCollection that contains a union of all of the elements in all input PCollections.
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" model_multiple_pcollections_flatten >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_multiple_pcollections_flatten >}}
 {{< /highlight >}}
 
 ##### 4.2.5.1. Data encoding in merged collections {#data-encoding-merged-collections}

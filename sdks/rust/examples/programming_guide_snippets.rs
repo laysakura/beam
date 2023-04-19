@@ -277,4 +277,17 @@ fn combine_per_key() {
     // [END combine_per_key]
 }
 
+fn model_multiple_pcollections_flatten() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // [START model_multiple_pcollections_flatten]
+    // let fib = pipeline.apply(Create::new(vec![1, 1, 2, 3, 5, 8]));
+    // let pow = pipeline.apply(Create::new(vec![1, 2, 4, 8, 16, 32]));
+    // let result = (fib, pow).apply(Flatten::new());
+    // [END model_multiple_pcollections_flatten]
+}
+
 fn main() {}
