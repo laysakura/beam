@@ -2077,6 +2077,7 @@ error when your pipeline is constructed.
 <span class="language-py">[`Partition`](https://github.com/apache/beam/blob/master/sdks/python/apache_beam/transforms/core.py)</span>
 <span class="language-go">[`Partition`](https://github.com/apache/beam/blob/master/sdks/go/pkg/beam/partition.go)</span>
 <span class="language-typescript">`Partition`</span>
+<span class="language-rust">`Partition` (TODO URL)</span>
 is a Beam transform for `PCollection` objects that store the same data
 type. `Partition` splits a single `PCollection` into a fixed number of smaller
 collections.
@@ -2131,6 +2132,10 @@ students = ...
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" model_multiple_pcollections_partition >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" model_multiple_pcollections_partition >}}
 {{< /highlight >}}
 
 ### 4.3. Requirements for writing user code for Beam transforms {#requirements-for-writing-user-code-for-beam-transforms}

@@ -290,4 +290,28 @@ fn model_multiple_pcollections_flatten() {
     // [END model_multiple_pcollections_flatten]
 }
 
+fn model_multiple_pcollections_partition() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // [START model_multiple_pcollections_partition]
+    // // Provide an i32 value with the desired number of result partitions, and a partitioning function (closure in this example).
+    // // Returns a Vec of PCollection objects containing each of the resulting partitions as individual PCollection objects.
+    // let students: PCollection<Student> = ...;
+
+    // // Split students up into 10 partitions, by percentile:
+    // let students_by_percentile: Vec<PCollection<Student>> = students.apply(
+    //     Partition::new(10, |student, num_partitions| {
+    //         student.percentile() // 0..99
+    //         * num_partitions / 100
+    //     })
+    // );
+
+    // // You can extract each partition from the PCollectionList using the get method, as follows:
+    // let fortieth_percentile: PCollection<Student> = students_by_percentile.get(4).unwrap();
+    // [END model_multiple_pcollections_partition]
+}
+
 fn main() {}
