@@ -1869,6 +1869,7 @@ pc = ...
 
 ##### 4.2.4.4. Combine and global windowing {#combine-global-windowing}
 
+{{< paragraph class="language-java language-py language-go language-typescript" >}}
 If your input `PCollection` uses the default global windowing, the default
 behavior is to return a `PCollection` containing one item. That item's value
 comes from the accumulator in the combine function that you specified when
@@ -1879,6 +1880,11 @@ a maximal or infinite value.
 To have `Combine` instead return an empty `PCollection` if the input is empty,
 specify `.withoutDefaults` when you apply your `Combine` transform, as in the
 following code example:
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust" >}}
+**Rust SDK does not support the default value in global windowing.**
+{{< /paragraph >}}
 
 {{< highlight java >}}
 PCollection<Integer> pc = ...;
@@ -1921,6 +1927,10 @@ applying `Combine`:
 If your `PCollection` uses any non-global windowing function, the Beam Go SDK
 behaves the same way as with global windowing. Windows that are empty in the input
   `PCollection` will likewise be empty in the output collection.
+{{< /paragraph >}}
+
+{{< paragraph class="language-rust" >}}
+**Rust SDK does not support the default value in non-global windowing.**
 {{< /paragraph >}}
 
 ##### 4.2.4.6. Combining values in a keyed PCollection {#combining-values-in-a-keyed-pcollection}
