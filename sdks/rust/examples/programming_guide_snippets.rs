@@ -256,4 +256,25 @@ fn combine_custom_average() {
     // [END combine_global_average]
 }
 
+fn combine_per_key() {
+    // // Create the pipeline.
+    // let options =
+    //     PipelineOptionsBuilder::from_args(...).build().unwrap();
+    // let pipeline = Pipeline::new(options);
+
+    // [START combine_per_key]
+    // // PCollection is grouped by key and the f64 values associated with each key are combined into a f64.
+    // let sales_records: PCollection<KV<String, f64>> = ...;
+    // let total_sales_per_person: PCollection<KV<String, f64>> = sales_records
+    //     .apply(GroupByKey::new())
+    //     .apply(Combine::<SumFn::<f64, f64>>::new());
+
+    // // The combined value is of a different type than the original collection of values per key. PCollection has
+    // // keys of type String and values of type i32, and the combined value is a f64.
+    // let player_accuracy: PCollection<KV<String, i32>> = ...;
+    // let avg_accuracy_per_player: PCollection<KV<String, f64>> = player_accuracy
+    //     .apply(Combine::<Mean::<i32, f64>>::new());
+    // [END combine_per_key]
+}
+
 fn main() {}

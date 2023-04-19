@@ -1676,6 +1676,12 @@ automatically apply some optimizations:
    that your streaming computation might be idle. Incremental combining also
    reduces the storage of intermediate accumulators.
 
+{{< paragraph class="language-rust" >}}
+In Rust, any `CombineFn` transform must take `PCollection<KV<_, _>>`.
+The `GroupGlobally` transform would be helpful to construct `PCollection<KV<(), T>>`
+from `PCollection<T>`, where all the values in type `T` belong to the same key.
+{{< /paragraph >}}
+
 ##### 4.2.4.1. Simple combinations using simple functions {#simple-combines}
 
 The following example code shows a simple combine function.
@@ -1990,6 +1996,10 @@ playerAccuracies := ... // PCollection<string,int>
 
 {{< highlight typescript >}}
 {{< code_sample "sdks/typescript/test/docs/programming_guide.ts" combine_per_key >}}
+{{< /highlight >}}
+
+{{< highlight rust >}}
+{{< code_sample "sdks/rust/examples/programming_guide_snippets.rs" combine_per_key >}}
 {{< /highlight >}}
 
 #### 4.2.5. Flatten {#flatten}
