@@ -89,6 +89,7 @@ Install clippy
 
 ```
 rustup component add clippy
+rustup override set nightly
 ```
 
 Install rustfmt
