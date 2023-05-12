@@ -52,6 +52,34 @@ use std::io::{self, Read, Write};
 /// w2.flush().unwrap();
 /// println!("{:?}", w2.into_inner()); // <= Prints a length-prefix string of bytes
 /// ```
+///
+/// # Coders' lifecycle
+///
+/// Coders, including their associated element types, are statically defined in the SDK (here we call them preset coders) or SDK users' code (custom coders).
+/// They are serialized in proto and sent to the runner, and then to the SDK harness.
+/// Then the SDK harness deserializes a proto coder with an `Any` associated element type and instantiate it.
+///
+/// Preset coders and custom coders have a bit different lifecycle, in that the latter needs to be serialized with the encode/decode functions.
+///
+/// ## Preset (required, standard, etc...) coders
+///
+/// 1. A preset coder is defined in the SDK.
+/// 2. The coder is instantiated by an SDK user's code on pipeline construction time, along with its coder ID.
+/// 3. The coder's URN and its ID are serialized. Note that an instance of the coder is not serialized for preset coders.
+/// 4. The serialized coder and its ID are sent to the SDK harness via Runner API -> Fn API.
+/// 5. The SDK harness receives the serialized coder's URN and its ID from Fn API.
+/// 6. The SDK harness deserializes the coder's URN and creates an instance of the coder specified by the URN.
+/// 7. The SDK harness stores the coder instance in a map, with the coder ID as the key.
+///
+/// ## Custom coders
+///
+/// 1. A custom coder is defined by an SDK user.
+/// 2. The coder is instantiated by an SDK user's code on pipeline construction time, along with its coder ID.
+/// 3. The coder's trait object (including the encode/decode functions) and its ID are serialized.
+/// 4. The serialized coder and its ID are sent to the SDK harness via Runner API -> Fn API.
+/// 5. The SDK harness receives the serialized coder's trait object and its ID from Fn API.
+/// 6. The SDK harness deserializes the coder's trait object coder's to get an instance.
+/// 7. The SDK harness stores the coder instance in a map, with the coder ID as the key.
 pub trait Coder: fmt::Debug + Default {
     /// The type of the elements to be encoded/decoded.
     type E;
