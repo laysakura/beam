@@ -85,11 +85,17 @@ Any contributions are more than welcome, regardless of size. Early code reviews 
 
 Install rustup and execute the commands from `sdks/rust`.
 
+We need nightly Rust since we currently use [serde_traitobject](https://github.com/alecmocatta/serde_traitobject).
+
+```console
+rustup install nightly
+rustup override set nightly
+```
+
 Install clippy
 
 ```
 rustup component add clippy
-rustup override set nightly
 ```
 
 Install rustfmt
