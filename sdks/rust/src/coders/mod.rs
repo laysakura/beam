@@ -80,7 +80,9 @@ use std::io::{self, Read, Write};
 /// 5. The SDK harness receives the serialized coder's trait object and its ID from Fn API.
 /// 6. The SDK harness deserializes the coder's trait object coder's to get an instance.
 /// 7. The SDK harness stores the coder instance in a map, with the coder ID as the key.
-pub trait Coder: fmt::Debug + Default {
+pub trait Coder:
+    fmt::Debug + Default + serde_traitobject::Serialize + serde_traitobject::Deserialize
+{
     /// The type of the elements to be encoded/decoded.
     type E;
 

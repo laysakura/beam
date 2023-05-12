@@ -31,12 +31,13 @@ use std::fmt;
 use std::io::{self, ErrorKind, Read, Write};
 
 use integer_encoding::{VarInt, VarIntReader, VarIntWriter};
+use serde::{Deserialize, Serialize};
 
 use crate::coders::required_coders::BytesCoder;
 use crate::coders::urns::*;
 use crate::coders::{Coder, Context};
 
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct StrUtf8Coder {}
 
 // TODO: accept string references as well?
@@ -87,7 +88,7 @@ impl fmt::Debug for StrUtf8Coder {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct VarIntCoder<N: fmt::Debug + VarInt> {
     _var_int_type: std::marker::PhantomData<N>,
 }

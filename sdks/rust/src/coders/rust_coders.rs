@@ -19,11 +19,14 @@
 use std::fmt;
 use std::marker::PhantomData;
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use crate::coders::standard_coders::*;
 use crate::coders::urns::*;
 use crate::coders::Coder;
 
-#[derive(Eq, PartialEq)]
+#[derive(Eq, PartialEq, Serialize, Deserialize)]
 pub struct GeneralObjectCoder<T> {
     phantom: PhantomData<T>,
 }

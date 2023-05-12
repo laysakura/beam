@@ -34,6 +34,7 @@ use std::io::{self, Read, Write};
 use std::marker::PhantomData;
 
 use integer_encoding::{VarIntReader, VarIntWriter};
+use serde::{Deserialize, Serialize};
 
 use crate::coders::urns::*;
 use crate::coders::{Coder, Context};
@@ -42,7 +43,7 @@ use crate::elem_types::ElemType;
 use crate::proto::beam_api::pipeline as proto_pipeline;
 
 /// Coder for byte-array data types
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct BytesCoder {}
 
 impl Coder for BytesCoder {
@@ -140,7 +141,7 @@ impl fmt::Debug for BytesCoder {
 }
 
 /// A coder for a key-value pair
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct KVCoder<KV> {
     phantom: PhantomData<KV>,
 }
@@ -191,7 +192,7 @@ where
 }
 
 /// A coder for a 'list' or a series of elements of the same type
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct IterableCoder<E>
 where
     E: ElemType,
