@@ -20,9 +20,9 @@
 /// # Related doc
 ///
 /// [Design doc: Custom Coders for the Beam Rust SDK](https://docs.google.com/document/d/1tUb8EoajRkxLW3mrJZzx6xxGhoiUSRKwVuT2uxjAeIU/edit#heading=h.mgr8mrx81tnc)
-/// 
+///
 /// # Note
-/// 
+///
 /// `register_coders!` must not be called twice or more in the whole test cases.
 /// It relies on OnceCell and each call to `register_coders!` will try to overwrite the OnceCell, which leads to panic.
 #[macro_export]
