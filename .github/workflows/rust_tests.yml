@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # TODO: the test cannot be compiled under Windows platform, add window-latest and fix the build
+        # TODO: the test fails under Windows platform (for directory separator in `--skip target/debug`. add window-latest and fix the build
         os: [ubuntu-latest, macos-latest]
     steps:
       - name: Check out code
