@@ -17,14 +17,13 @@
     under the License.
 -->
 
-# Rust Beam SDK
-TODO
+# Beam Rust SDK (experimental)
 
-Main differences to the other SDKs
-- Systems programming language: ...
-- Ownership: ...
-- No inheritance: ...
-- ...
+This repo is emerged form the [Rust SDK issue in apache/beam repo](https://github.com/apache/beam/issues/21089).
+
+Anyone who is interested in the development of the Beam Rust SDK, you can freely join [discord](https://discord.gg/DVbKujUsyp).
+
+Reading (and even writing) [design docs](https://github.com/laysakura/beam/wiki/Design-docs) would also be a good first step to get ready for contributions.
 
 ## API
 TODO
