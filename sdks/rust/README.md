@@ -23,6 +23,7 @@ This repo is emerged form the [Rust SDK issue in apache/beam repo](https://githu
 
 Anyone who is interested in the development of the Beam Rust SDK, you can freely join [discord](https://discord.gg/DVbKujUsyp).
 
+To check the development roadmap, read [the task dependencies graph in Wiki](https://github.com/laysakura/beam/wiki/Task-dependencies-graph).
 Reading (and even writing) [design docs](https://github.com/laysakura/beam/wiki/Design-docs) would also be a good first step to get ready for contributions.
 
 ## API
