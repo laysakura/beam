@@ -36,10 +36,13 @@ package org.apache.beam.examples;
 //     - strings
 
 import java.util.Arrays;
+import java.util.Collections;
+
+import org.apache.beam.runners.portability.PortableRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
-import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
+import org.apache.beam.sdk.options.PortablePipelineOptions;
 import org.apache.beam.sdk.transforms.Count;
 import org.apache.beam.sdk.transforms.Filter;
 import org.apache.beam.sdk.transforms.FlatMapElements;
@@ -82,7 +85,10 @@ public class MinimalWordCount {
     // options for our pipeline, such as the runner you wish to use. This example
     // will run with the DirectRunner by default, based on the class path configured
     // in its dependencies.
-    PipelineOptions options = PipelineOptionsFactory.create();
+    PortablePipelineOptions options = PipelineOptionsFactory.fromArgs(args).create().as(PortablePipelineOptions.class);
+    options.setRunner(PortableRunner.class);
+    options.setJobEndpoint("localhost:8099");
+    options.setDefaultEnvironmentType("LOOPBACK");
     // [END create_pipeline_options]
 
     // In order to run your pipeline, you need to make following runner specific changes:

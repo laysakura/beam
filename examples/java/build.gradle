@@ -82,6 +82,7 @@ dependencies {
   implementation library.java.commons_io
   implementation library.java.commons_csv
   runtimeOnly project(path: ":runners:direct-java", configuration: "shadow")
+  implementation project(path: ":runners:portability:java")
   implementation library.java.vendored_grpc_1_54_0
   implementation library.java.vendored_guava_26_0_jre
   implementation "com.google.api.grpc:proto-google-cloud-language-v1:1.81.4"
@@ -172,4 +173,12 @@ task wordCount(type:JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
   systemProperties = System.getProperties()
   args = ["--output=/tmp/ouput.txt"]
+}
+
+task minWordCount(type:JavaExec) {
+  description "Run the Java min word count example"
+  mainClass = "org.apache.beam.examples.MinimalWordCount"
+  classpath = sourceSets.main.runtimeClasspath
+  systemProperties = System.getProperties()
+  args = []
 }
