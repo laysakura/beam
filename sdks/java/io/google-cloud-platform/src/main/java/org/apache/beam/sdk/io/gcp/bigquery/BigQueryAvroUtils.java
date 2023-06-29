@@ -35,7 +35,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.avro.Conversions;
@@ -401,23 +404,55 @@ class BigQueryAvroUtils {
         unionTypes.get(1).getType(), unionTypes.get(1).getLogicalType(), fieldSchema, v);
   }
 
-  static Schema toGenericAvroSchema(String schemaName, List<TableFieldSchema> fieldSchemas) {
+  static Schema toGenericAvroSchema(
+      String schemaName, List<TableFieldSchema> fieldSchemas, @Nullable String namespace) {
+
+    String nextNamespace = namespace == null ? null : String.format("%s.%s", namespace, schemaName);
+
     List<Field> avroFields = new ArrayList<>();
     for (TableFieldSchema bigQueryField : fieldSchemas) {
-      avroFields.add(convertField(bigQueryField));
+      avroFields.add(convertField(bigQueryField, nextNamespace));
     }
     return Schema.createRecord(
         schemaName,
         "Translated Avro Schema for " + schemaName,
-        "org.apache.beam.sdk.io.gcp.bigquery",
+        namespace == null ? "org.apache.beam.sdk.io.gcp.bigquery" : namespace,
         false,
         avroFields);
+  }
+
+  static Schema toGenericAvroSchema(String schemaName, List<TableFieldSchema> fieldSchemas) {
+    return toGenericAvroSchema(
+        schemaName,
+        fieldSchemas,
+        hasNamespaceCollision(fieldSchemas) ? "org.apache.beam.sdk.io.gcp.bigquery" : null);
+  }
+
+  // To maintain backwards compatibility we only disambiguate collisions in the field namespaces as
+  // these never worked with this piece of code.
+  private static boolean hasNamespaceCollision(List<TableFieldSchema> fieldSchemas) {
+    Set<String> recordTypeFieldNames = new HashSet<>();
+
+    List<TableFieldSchema> fieldsToCheck = new ArrayList<>();
+    for (fieldsToCheck.addAll(fieldSchemas); !fieldsToCheck.isEmpty(); ) {
+      TableFieldSchema field = fieldsToCheck.remove(0);
+      if ("STRUCT".equals(field.getType()) || "RECORD".equals(field.getType())) {
+        if (recordTypeFieldNames.contains(field.getName())) {
+          return true;
+        }
+        recordTypeFieldNames.add(field.getName());
+        fieldsToCheck.addAll(field.getFields());
+      }
+    }
+
+    // No collisions present
+    return false;
   }
 
   @SuppressWarnings({
     "nullness" // Avro library not annotated
   })
-  private static Field convertField(TableFieldSchema bigQueryField) {
+  private static Field convertField(TableFieldSchema bigQueryField, @Nullable String namespace) {
     ImmutableCollection<Type> avroTypes = BIG_QUERY_TO_AVRO_TYPES.get(bigQueryField.getType());
     if (avroTypes.isEmpty()) {
       throw new IllegalArgumentException(
@@ -427,9 +462,10 @@ class BigQueryAvroUtils {
     Type avroType = avroTypes.iterator().next();
     Schema elementSchema;
     if (avroType == Type.RECORD) {
-      elementSchema = toGenericAvroSchema(bigQueryField.getName(), bigQueryField.getFields());
+      elementSchema =
+          toGenericAvroSchema(bigQueryField.getName(), bigQueryField.getFields(), namespace);
     } else {
-      elementSchema = Schema.create(avroType);
+      elementSchema = handleAvroLogicalTypes(bigQueryField, avroType);
     }
     Schema fieldSchema;
     if (bigQueryField.getMode() == null || "NULLABLE".equals(bigQueryField.getMode())) {
@@ -447,5 +483,33 @@ class BigQueryAvroUtils {
         fieldSchema,
         bigQueryField.getDescription(),
         (Object) null /* Cast to avoid deprecated JsonNode constructor. */);
+  }
+
+  private static Schema handleAvroLogicalTypes(TableFieldSchema bigQueryField, Type avroType) {
+    String bqType = bigQueryField.getType();
+    switch (bqType) {
+      case "NUMERIC":
+        // Default value based on
+        // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types
+        int precision = Optional.ofNullable(bigQueryField.getPrecision()).orElse(38L).intValue();
+        int scale = Optional.ofNullable(bigQueryField.getScale()).orElse(9L).intValue();
+        return LogicalTypes.decimal(precision, scale).addToSchema(Schema.create(Type.BYTES));
+      case "BIGNUMERIC":
+        // Default value based on
+        // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types
+        int precisionBigNumeric =
+            Optional.ofNullable(bigQueryField.getPrecision()).orElse(77L).intValue();
+        int scaleBigNumeric = Optional.ofNullable(bigQueryField.getScale()).orElse(38L).intValue();
+        return LogicalTypes.decimal(precisionBigNumeric, scaleBigNumeric)
+            .addToSchema(Schema.create(Type.BYTES));
+      case "TIMESTAMP":
+        return LogicalTypes.timestampMicros().addToSchema(Schema.create(Type.LONG));
+      case "GEOGRAPHY":
+        Schema geoSchema = Schema.create(Type.STRING);
+        geoSchema.addProp(LogicalType.LOGICAL_TYPE_PROP, "geography_wkt");
+        return geoSchema;
+      default:
+        return Schema.create(avroType);
+    }
   }
 }

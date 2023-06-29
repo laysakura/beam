@@ -85,7 +85,10 @@ func Execute(ctx context.Context, p *beam.Pipeline) (beam.PipelineResult, error)
 	if err != nil {
 		return nil, errors.WithContextf(err, "generating model pipeline")
 	}
-	pipeline, err := graphx.Marshal(edges, &graphx.Options{Environment: environment})
+	pipeline, err := graphx.Marshal(edges, &graphx.Options{
+		Environment:           environment,
+		PipelineResourceHints: jobopts.GetPipelineResourceHints(),
+	})
 	if err != nil {
 		return nil, errors.WithContextf(err, "generating model pipeline")
 	}
@@ -99,6 +102,5 @@ func Execute(ctx context.Context, p *beam.Pipeline) (beam.PipelineResult, error)
 		RetainDocker: *jobopts.RetainDockerContainers,
 		Parallelism:  *jobopts.Parallelism,
 	}
-	presult, err := runnerlib.Execute(ctx, pipeline, endpoint, opt, *jobopts.Async)
-	return presult, err
+	return runnerlib.Execute(ctx, pipeline, endpoint, opt, *jobopts.Async)
 }

@@ -42,6 +42,7 @@ import "org/apache/beam/model/pipeline/v1/beam_runner_api.proto";
 import "org/apache/beam/model/pipeline/v1/endpoints.proto";
 import "org/apache/beam/model/pipeline/v1/metrics.proto";
 import "google/protobuf/descriptor.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
@@ -109,6 +110,7 @@ message InstructionRequest {
     FinalizeBundleRequest finalize_bundle = 1004;
     MonitoringInfosMetadataRequest monitoring_infos = 1005;
     HarnessMonitoringInfosRequest harness_monitoring_infos = 1006;
+    SampleDataRequest sample_data = 1007;
 
     // DEPRECATED
     RegisterRequest register = 1000;
@@ -137,10 +139,60 @@ message InstructionResponse {
     FinalizeBundleResponse finalize_bundle = 1004;
     MonitoringInfosMetadataResponse monitoring_infos = 1005;
     HarnessMonitoringInfosResponse harness_monitoring_infos = 1006;
+    SampleDataResponse sample_data = 1007;
 
     // DEPRECATED
     RegisterResponse register = 1000;
   }
+}
+
+// If supported, the `SampleDataRequest` will respond with a
+// `SampleDataResponse`. The SDK being queried must have the
+// "beam:protocol:data_sampling:v1" capability. Samples are taken only from the
+// specified PCollection ids. An empty list will return everything.
+message SampleDataRequest {
+  // (Optional) The PCollection ids to filter for.
+  repeated string pcollection_ids = 1;
+}
+
+// An element sampled when the SDK is processing a bundle. This is a proto
+// message to allow for additional per-element metadata.
+message SampledElement {
+  // (Required) Sampled raw bytes for an element. This is a
+  // single encoded element in the nested context.
+  bytes element = 1;
+
+  // (Required) Timestamp of when the sample was taken.
+  google.protobuf.Timestamp sample_timestamp = 2;
+
+  message Exception {
+    // (Required) The instruction ID of the associated ProcessBundleRequest.
+    string instruction_id = 1;
+
+    // (Required) The transform ID of the executing PTransform during the
+    // exception.
+    string transform_id = 2;
+
+    // (Required) The error message to be displayed to the user. Can use the
+    // other fields to query for contextual logs.
+    string error = 3;
+  }
+
+  // (Optional) This will be set if this element was sampled because of a user
+  // exception.
+  Exception exception = 3;
+}
+
+// If supported, the `SampleDataResponse` will contain samples from PCollections
+// based upon the filters specified in the request.
+message SampleDataResponse {
+  message ElementList {
+    // Required. The individual elements sampled from a PCollection.
+    repeated SampledElement elements = 1;
+  }
+
+  // Map from PCollection id to sampled elements.
+  map<string, ElementList> element_samples = 1;
 }
 
 // A request to provide full MonitoringInfo associated with the entire SDK
@@ -603,7 +655,7 @@ message Elements {
     // (Optional) Represents a part of a logical byte stream. Elements within
     // the logical byte stream are encoded in the nested context and
     // concatenated together.
-    bytes data = 3;
+    bytes data = 3 [ctype = CORD];
 
     // (Optional) Set this bit to indicate the this is the last data block
     // for the given instruction and transform, ending the stream.
@@ -1004,6 +1056,10 @@ message LogEntry {
 
   // (Optional) The name of the thread this log statement is associated with.
   string thread = 8;
+
+  // (Optional) Additional structured data to log.
+  // Keys are limited to these characters: [a-zA-Z_-]
+  google.protobuf.Struct custom_data = 9;
 }
 
 message LogControl {}

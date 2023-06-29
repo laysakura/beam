@@ -15,18 +15,6 @@
 
 package filter_test
 
-// beam-playground:
-//   name: FilterTest
-//   description: Unit-test for the Filter example.
-//   multifile: false
-//   context_line: 34
-//   categories:
-//     - Filtering
-//   complexity: BASIC
-//   tags:
-//     - filter
-//     - test
-
 import (
 	"testing"
 
@@ -38,7 +26,7 @@ import (
 func TestInclude(t *testing.T) {
 	tests := []struct {
 		in  []int
-		fn  interface{}
+		fn  any
 		exp []int
 	}{
 		{
@@ -71,7 +59,7 @@ func TestInclude(t *testing.T) {
 func TestExclude(t *testing.T) {
 	tests := []struct {
 		in  []int
-		fn  interface{}
+		fn  any
 		exp []int
 	}{
 		{
