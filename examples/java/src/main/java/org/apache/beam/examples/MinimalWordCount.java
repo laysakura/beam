@@ -38,6 +38,7 @@ package org.apache.beam.examples;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.example.singlerunner.SingleRunner;
 import org.apache.beam.runners.direct.DirectRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
@@ -86,7 +87,8 @@ public class MinimalWordCount {
     // will run with the DirectRunner by default, based on the class path configured
     // in its dependencies.
     PipelineOptions options = PipelineOptionsFactory.fromArgs(args).create();
-    options.setRunner(DirectRunner.class);
+    options.setRunner(SingleRunner.class);
+//    options.setRunner(DirectRunner.class);
     // [END create_pipeline_options]
 
     // In order to run your pipeline, you need to make following runner specific changes:
